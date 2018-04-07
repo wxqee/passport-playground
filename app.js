@@ -6,6 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
 
+/* Require for passport */
+var session = require('express-session');
+var passport = require('passport');
+var MyPassport = require('./auth');
+/* End: Require for passport */
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -28,6 +34,12 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+/* Usage for passport */
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true, }));
+app.use(passport.initialize());
+app.use(passport.session());
+/* End: Usage for passport */
 
 app.use('/', index);
 app.use('/users', users);
